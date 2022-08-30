@@ -9,9 +9,16 @@ import 'package:news_app/shared/network/remote/http_helper.dart';
 import '../../model/ArticleResponse.dart';
 import '../../model/Source.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   static String route = "search_screen";
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   String query = "";
+
   @override
   Widget build(BuildContext context) {
     Source source = ModalRoute.of(context)!.settings.arguments as Source;
@@ -34,6 +41,9 @@ class SearchScreen extends StatelessWidget {
                 child: TextFormField(
                   onChanged: (text){
                     query = text;
+                    setState((){
+
+                    });
                   },
                   style:Theme.of(context).textTheme.titleSmall ,
                   decoration: InputDecoration(
@@ -98,6 +108,7 @@ class SearchScreen extends StatelessWidget {
       ],
     );
   }
+
   Future<ArticleResponse?> getQueriedArticles(Source source)async{
     try{
       Response httpResponse = await HttpHelper.FetchSourcesArticlesWithQuery(source.id!, query);
