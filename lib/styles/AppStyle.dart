@@ -18,7 +18,7 @@ class AppStyle{
       ),
       backgroundColor: lightPrimaryColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50)
+        borderRadius: BorderRadiusDirectional.only(bottomStart: Radius.circular(50),bottomEnd: Radius.circular(50))
       ),
       centerTitle: true,
     ),

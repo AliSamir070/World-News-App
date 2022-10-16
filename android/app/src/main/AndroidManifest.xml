@@ -2,9 +2,9 @@
     package="com.example.news_app">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="news_app"
+        android:label="News App"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

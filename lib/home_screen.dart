@@ -7,7 +7,7 @@ import 'modules/settings/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static String route = "home_screen";
-  List<String> categoriesTitles = ["Sports" , "Politics" , "Health" , "Business" , "Entertainment" , "Science"];
+  List<String> categoriesTitles = ["Sports" , "Politics" , "Health" , "Business" , "Entertain" , "Science"];
   List<bool> categoriesDirections = [false , true, false , true, false , true];
   List<String> categoriesIcons = [
     "assets/images/sports.png","assets/images/Politics.png",
@@ -113,8 +113,8 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(32.0),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        childAspectRatio: 1/1,
+                        maxCrossAxisExtent: width*0.75,
+                        childAspectRatio: 1/1.12,
                         crossAxisSpacing: 20,
                         mainAxisSpacing: 20
                     ),
