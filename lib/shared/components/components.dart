@@ -6,11 +6,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:news_app/model/Source.dart';
 import 'package:news_app/modules/article_view/article_view_screen.dart';
+import 'package:news_app/shared/network/remote/api_manager.dart';
 import 'package:news_app/shared/network/remote/http_helper.dart';
 
 import '../../model/Article.dart';
 import '../../model/ArticleResponse.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../modules/news_viewModel.dart';
+import '../network/repository/data_source/news_api_repo.dart';
 class CategoryItem extends StatelessWidget {
   Color ItemColor;
   bool isLeft;
@@ -87,7 +91,7 @@ class _TabListItemState extends State<TabListItem> {
   List<Article> articles = [];
 
   int page = 1;
-
+  NewsViewModel newsViewModel = NewsViewModel(newsRepository: NewsApiRepo());
   final _controller = ScrollController();
   @override
   void initState() {
@@ -110,7 +114,7 @@ class _TabListItemState extends State<TabListItem> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<ArticleResponse?>(
-          future: getArticlesOfSource(),
+          future: newsViewModel.NewsArticleSource(widget.source.id!,page),
           builder: (context , snapShot){
             if(snapShot.hasError){
               return Text('Something wrong , please try again');
@@ -131,26 +135,6 @@ class _TabListItemState extends State<TabListItem> {
     );
   }
 
-  Future<ArticleResponse?> getArticlesOfSource()async{
-    try{
-      Response httpResponse = await HttpHelper.FetchSourcesArticles(widget.source.id!,page);
-      ArticleResponse response = ArticleResponse.fromJson(jsonDecode(httpResponse.body));
-      if(httpResponse.statusCode>=200 && httpResponse.statusCode<300 ){
-        return response;
-
-      }else{
-        throw Exception(response.message!);
-      }
-    }on Exception catch(e){
-      Fluttertoast.showToast(
-          msg: "No Network Connection",
-          toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
-    }
-    print("Exception");
-  }
 }
 class ArticlesListItem extends StatelessWidget {
   Article article;

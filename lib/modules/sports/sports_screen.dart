@@ -6,7 +6,11 @@ import 'package:news_app/model/Source.dart';
 import 'package:news_app/model/SourceResponse.dart';
 import 'package:news_app/modules/search/search_screen.dart';
 import 'package:news_app/shared/components/components.dart';
+import 'package:news_app/shared/network/remote/api_manager.dart';
 import 'package:news_app/shared/network/remote/http_helper.dart';
+
+import '../../shared/network/repository/data_source/news_api_repo.dart';
+import '../news_viewModel.dart';
 
 class SportsScreen extends StatefulWidget {
   static String route = "Sports";
@@ -18,10 +22,19 @@ class SportsScreen extends StatefulWidget {
 class _SportsScreenState extends State<SportsScreen> {
   List<Source> sources = [];
   int currentIndex = 0;
+  NewsViewModel newsViewModel = NewsViewModel(newsRepository: NewsApiRepo());
   @override
   Widget build(BuildContext context) {
     if (sources.isEmpty) {
-      getSportsSources();
+      newsViewModel.NewsCategorySource("sports").then((value) {
+        print(value!.sources![0].name);
+        if(value!=null){
+          sources = value.sources!;
+          print("jhjg");
+          setState((){});
+        }else{
+        }
+      });
     }
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -85,31 +98,4 @@ class _SportsScreenState extends State<SportsScreen> {
     );
   }
 
-  void getSportsSources() {
-    try {
-      HttpHelper.FetchCategorizedSources("sports").then((value) {
-        SourceResponse response =
-            SourceResponse.fromJson(jsonDecode(value.body));
-        if (value.statusCode >= 200 && value.statusCode < 300) {
-          sources = response.sources!;
-          print("tesst");
-          setState(() {});
-        } else {
-          Fluttertoast.showToast(
-              msg: response.message!,
-              toastLength: Toast.LENGTH_SHORT,
-              backgroundColor: Colors.grey,
-              textColor: Colors.black,
-              fontSize: 16.0);
-        }
-      });
-    } on Exception catch (e) {
-      Fluttertoast.showToast(
-          msg: "No Network Connection",
-          toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
-    }
-  }
 }

@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:news_app/modules/news_viewModel.dart';
+import 'package:news_app/modules/search/search_viewModel.dart';
 import 'package:news_app/shared/components/components.dart';
+import 'package:news_app/shared/network/remote/api_manager.dart';
 import 'package:news_app/shared/network/remote/http_helper.dart';
+import 'package:news_app/shared/network/repository/data_source/news_api_repo.dart';
 
 import '../../model/ArticleResponse.dart';
 import '../../model/Source.dart';
@@ -18,7 +22,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String query = "";
-
+  SearchViewModel searchViewModel = SearchViewModel(newsRepository: NewsApiRepo());
   @override
   Widget build(BuildContext context) {
     Source source = ModalRoute.of(context)!.settings.arguments as Source;
@@ -50,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     suffixIcon: IconButton(
                         onPressed: (){
                           FocusScope.of(context).requestFocus(new FocusNode());
-                          getQueriedArticles(source);
+                          ApiManager.getQueriedArticles(source , query);
                         },
                         icon: Icon(
                             Icons.search,
@@ -82,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
             body: Container(
               padding: EdgeInsetsDirectional.all(16),
               child: FutureBuilder<ArticleResponse?>(
-                  future: getQueriedArticles(source),
+                  future: searchViewModel.NewsSearch(source , query),
                   builder: (context , snapshot){
                     if(snapshot.hasError){
                       return Text('Something went wrong, please try again');
@@ -109,22 +113,5 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<ArticleResponse?> getQueriedArticles(Source source)async{
-    try{
-      Response httpResponse = await HttpHelper.FetchSourcesArticlesWithQuery(source.id!, query);
-      ArticleResponse articleResponse = ArticleResponse.fromJson(jsonDecode(httpResponse.body));
-      if(httpResponse.statusCode>=200 && httpResponse.statusCode<300){
-        return articleResponse;
-      }else{
-        throw Exception(articleResponse.message);
-      }
-    }on Exception catch(e){
-      Fluttertoast.showToast(
-          msg: "No Network Connection",
-          toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
-    }
-  }
+
 }

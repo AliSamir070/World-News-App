@@ -6,7 +6,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../model/Source.dart';
 import '../../model/SourceResponse.dart';
 import '../../shared/components/components.dart';
+import '../../shared/network/remote/api_manager.dart';
 import '../../shared/network/remote/http_helper.dart';
+import '../../shared/network/repository/data_source/news_api_repo.dart';
+import '../news_viewModel.dart';
 import '../search/search_screen.dart';
 
 class ScienceScreen extends StatefulWidget {
@@ -19,10 +22,16 @@ class ScienceScreen extends StatefulWidget {
 class _ScienceScreenState extends State<ScienceScreen> {
   List<Source> sources = [];
   int currentIndex = 0;
+  NewsViewModel newsViewModel = NewsViewModel(newsRepository: NewsApiRepo());
   @override
   Widget build(BuildContext context) {
     if (sources.isEmpty) {
-      getScienceSources();
+      newsViewModel.NewsCategorySource("science").then((value) {
+        if(value!=null){
+          sources = value.sources!;
+          setState((){});
+        }
+      });
     }
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -88,30 +97,4 @@ class _ScienceScreenState extends State<ScienceScreen> {
     );
   }
 
-  void getScienceSources() {
-    try {
-      HttpHelper.FetchCategorizedSources("science").then((value) {
-        SourceResponse response =
-        SourceResponse.fromJson(jsonDecode(value.body));
-        if (value.statusCode >= 200 && value.statusCode < 300) {
-          sources = response.sources!;
-          setState(() {});
-        } else {
-          Fluttertoast.showToast(
-              msg: response.message!,
-              toastLength: Toast.LENGTH_SHORT,
-              backgroundColor: Colors.grey,
-              textColor: Colors.black,
-              fontSize: 16.0);
-        }
-      });
-    } on Exception catch (e) {
-      Fluttertoast.showToast(
-          msg: "No Network Connection",
-          toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16.0);
-    }
-  }
 }
