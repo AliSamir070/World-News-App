@@ -1,16 +1,14 @@
-# news_app
+# World News App
 
-A new Flutter project.
+World News App is your gateway to the latest news from across the globe, featuring articles from diverse sources. Stay informed with real-time updates on politics, business, technology, entertainment, sports, and more. With a user-friendly interface, the app ensures you have easy access to a wide range of perspectives and in-depth coverage on the stories that matter most. World News App keeps you connected to the world, all in one place.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+<img src="https://github.com/AliSamir070/World-News-App/assets/35662738/b1135d03-fc32-40b7-b046-25e359a2e8a8" width="200" height="400" />
+<img src="https://github.com/AliSamir070/World-News-App/assets/35662738/8c0ca7e4-dde0-4b40-8801-e48d505594fe" width="200" height="400" />
+<img src="https://github.com/AliSamir070/World-News-App/assets/35662738/a5866cc3-007f-4b4b-b0c3-a5a608be8cb5" width="200" height="400" />
+<img src="https://github.com/AliSamir070/World-News-App/assets/35662738/b0e5d987-2593-443d-80d4-cc27d5638e22" width="200" height="400" />
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://github.com/AliSamir070/World-News-App/assets/35662738/e4a1cb2e-6582-4687-adcb-37935f1d8f91
+
